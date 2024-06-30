@@ -3,8 +3,10 @@
 /* let parrafo= document.querySelector('p');
 parrafo.innerHTML='Ingresa un numero del 1 al 10'; */
 
-let numeroSecreto=generarNumeroSecreto();
-let intentos=1;
+let numeroSecreto;
+let intentos;
+
+console.log(numeroSecreto);
 
 function asignarTextoElemento(elemento, texto){
     let elementoHTML= document.querySelector(elemento); 
@@ -12,8 +14,6 @@ function asignarTextoElemento(elemento, texto){
     return;
 }
 
-asignarTextoElemento('h1',"Juego del numero secreto actualizado ");
-asignarTextoElemento('p',"Ingresa un numero del 1 al 10");
 
 function generarNumeroSecreto(){
     return Math.floor(Math.random()*10)+1;
@@ -21,29 +21,45 @@ function generarNumeroSecreto(){
 
 function verificarIntento(){
     let numeroDeUsuario= parseInt(document.getElementById('valorUsuario').value);
-    console.log(numeroSecreto);
-
+    
     if (numeroDeUsuario===numeroSecreto){
         asignarTextoElemento('p',`Acertaste el número en ${intentos} ${(intentos===1)?'vez':'veces'}`);
+        document.getElementById('reiniciar').removeAttribute('disabled');
     }
     else{
         //el usuario no acerto
-        if (numeroSecreto>numeroDeUsuario){
-            asignarTextoElemento('p','El numero es mayor');
+        if (numeroSecreto<numeroDeUsuario){
+            asignarTextoElemento('p','El numero secreto es menor');
         }
         else{
-            asignarTextoElemento('p','El numero es menor');
+            asignarTextoElemento('p','El numero secreto es mayor');
         }
-        intentos++;
+
         limpiarCaja();
     }
+
+    intentos++;
+    console.log(intentos);
+
     return;
 }
 
 function limpiarCaja(){
-    let valorCaja=document.querySelector('#valorUsuario');
-    valorCaja.value= '';
+    document.querySelector('#valorUsuario').value='';
+}
+function condicionesIniciales(){
+    asignarTextoElemento('h1',"Juego del numero secreto actualizado ");
+    asignarTextoElemento('p',"Ingresa un numero del 1 al 10");
+    intentos=1;
+    numeroSecreto=generarNumeroSecreto();
 }
 
-let botonVerificar = document.getElementById('botonVerificar');
-botonVerificar.addEventListener('click', verificarIntento);
+function reiniciarJuego(){
+    limpiarCaja();
+    condicionesIniciales();
+    document.querySelector('#reiniciar').setAttribute('disabled',true);
+}
+
+condicionesIniciales();
+/* let botonVerificar = document.getElementById('botonVerificar');
+botonVerificar.addEventListener('click', verificarIntento); */
